@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GroceryStoreAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,29 @@ namespace GroceryStoreAPI.Controllers
     [Route("api/foods")]
     public class FoodsController : Controller
     {
-        [HttpGet]
-        public IEnumerable<string> GetFoods()
+        private IList<FoodModel> _foods;
+
+        public FoodsController()
         {
-            var foodList = new List<string>() { "Candy", "Fruits" };
-            return foodList;
+            _foods = new List<FoodModel>();
+            _foods.Add(new FoodModel()
+            {
+                Id = 1,
+                name = "Candy",
+                description = "A world of candies you cant even imagine"
+            });
+            _foods.Add(new FoodModel()
+            {
+                Id = 2,
+                name = "Meat",
+                description = "Delicious meat for all tastes"
+            });
+        }
+
+        [HttpGet]
+        public IEnumerable<FoodModel> GetFoods()
+        {
+            return _foods;
         }
     }
 }
