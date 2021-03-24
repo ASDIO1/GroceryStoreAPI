@@ -26,31 +26,31 @@ namespace GroceryStoreAPI.Controllers
             }
         };
 
-        public FoodsController()
+       /* public FoodsController()
         {
-        }
+        }*/
 
         [HttpGet]
-        public IEnumerable<FoodModel> GetFoods()
+        public ActionResult<IEnumerable<FoodModel>> GetFoods()
         {
-            return _foods;
+            return Ok(_foods);
         }
 
         [HttpGet("{foodId:long}")]
-        public FoodModel GetFood(long foodId)
+        public ActionResult<FoodModel> GetFood(long foodId)
         {
             var food = _foods.FirstOrDefault(f => f.Id == foodId);
-            return food;
+            return Ok(food);
         }
 
         // POST   api/foods
         [HttpPost]
-        public FoodModel PostFood([FromBody] FoodModel newFood)
+        public ActionResult<FoodModel> CreateFood([FromBody] FoodModel newFood)
         {
             var next_Id = _foods.OrderByDescending(f => f.Id).FirstOrDefault().Id + 1;
             newFood.Id = next_Id;
             _foods.Add(newFood);
-            return newFood;
+            return Created($"api/foods/{next_Id}",newFood);
         }
     }
 }
