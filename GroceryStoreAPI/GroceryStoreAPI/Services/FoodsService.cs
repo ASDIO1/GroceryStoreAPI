@@ -8,19 +8,45 @@ namespace GroceryStoreAPI.Services
 {
     public class FoodsService : IFoodsService
     {
-        public FoodModel CreateFood(FoodModel newFood)
+        //ESTADOS del modelo
+        static private IList<FoodModel> _foods;
+
+        public FoodsService()
         {
-            throw new NotImplementedException();
+            _foods = new List<FoodModel>();
+
+            _foods.Add(new FoodModel()
+            {
+                Id = 1,
+                name = "Candy",
+                description = "A world of candies you cant even imagine"
+            });
+            _foods.Add(new FoodModel()
+            {
+                Id = 2,
+                name = "Meat",
+                description = "Delicious meat for all tastes"
+            });
         }
 
-        public FoodModel GetFood(long foodId)
-        {
-            throw new NotImplementedException();
-        }
-
+        //Endpoints desde el service
         public IEnumerable<FoodModel> GetFoods()
         {
-            throw new NotImplementedException();
+            return _foods;
         }
+        
+        public FoodModel GetFood(long foodId)
+        {
+            var food = _foods.FirstOrDefault(f => f.Id == foodId);
+            return food;
+        }
+        public FoodModel CreateFood(FoodModel newFood)
+        {
+            var next_Id = _foods.OrderByDescending(f => f.Id).FirstOrDefault().Id + 1;
+            newFood.Id = next_Id;
+            _foods.Add(newFood);
+            return newFood;
+        }
+
     }
 }
