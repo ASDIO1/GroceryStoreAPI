@@ -1,4 +1,5 @@
-﻿using GroceryStoreAPI.Models;
+﻿using GroceryStoreAPI.Exceptions;
+using GroceryStoreAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,10 @@ namespace GroceryStoreAPI.Services
         public FoodModel GetFood(long foodId)
         {
             var food = _foods.FirstOrDefault(f => f.Id == foodId);
+            if (food == null)
+            {
+                throw new NotFoundItemException($"The team with id: {foodId} does not exist.");
+            }
             return food;
         }
         public FoodModel CreateFood(FoodModel newFood)
@@ -48,5 +53,11 @@ namespace GroceryStoreAPI.Services
             return newFood;
         }
 
+        public bool DeleteFood(long foodId)
+        {
+            var foodToDelete = GetFood(foodId);
+            _foods.Remove(foodToDelete);
+            return true;
+        }
     }
 }

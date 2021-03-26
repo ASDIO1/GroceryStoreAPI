@@ -11,5 +11,6 @@ namespace GroceryStoreAPI.Services
         public IEnumerable<FoodModel> GetFoods();
         public FoodModel GetFood(long foodId);
         public FoodModel CreateFood(FoodModel newFood);
+        public bool DeleteFood(long foodId);
     }
 }
