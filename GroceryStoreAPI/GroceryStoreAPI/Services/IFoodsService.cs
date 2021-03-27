@@ -8,9 +8,10 @@ namespace GroceryStoreAPI.Services
 {
     public interface IFoodsService
     {
-        public IEnumerable<FoodModel> GetFoods();
+        public IEnumerable<FoodModel> GetFoods(string orderBy = "Id");
         public FoodModel GetFood(long foodId);
         public FoodModel CreateFood(FoodModel newFood);
         public bool DeleteFood(long foodId);
+        public FoodModel UpdateFood(long foodId, FoodModel updatedFood);
     }
 }

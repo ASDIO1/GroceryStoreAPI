@@ -21,12 +21,16 @@ namespace GroceryStoreAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FoodModel>> GetFoods()
+        public ActionResult<IEnumerable<FoodModel>> GetFoods(string orderBy = "Id")//[FromQuery]string orderBy = "Id"
         {
             try
             {
-                var foods = _foodsService.GetFoods();
+                var foods = _foodsService.GetFoods(orderBy);
                 return Ok(foods);
+            }
+            catch(InvalidCastException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception)
             {
@@ -77,6 +81,24 @@ namespace GroceryStoreAPI.Controllers
             {
                 var result = _foodsService.DeleteFood(foodId);
                 return Ok(result);
+            }
+            catch (NotFoundItemException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something unexpected happened.");
+            }
+        }
+        [HttpPut("{foodId:long}")]
+        public ActionResult<FoodModel> UpdateFood(long foodId,[FromBody] FoodModel updatedFood)
+        {
+            try
+            {
+                /*Model should be validated here for each property not included in the body (null property value)*/
+                var food = _foodsService.UpdateFood(foodId, updatedFood);
+                return Ok(food);
             }
             catch (NotFoundItemException ex)
             {
