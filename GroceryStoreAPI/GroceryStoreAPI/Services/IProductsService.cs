@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GroceryStoreAPI.Services
 {
-    interface IProductsService
+    public interface IProductsService
     {
         public IEnumerable<ProductModel> GetProducts(long foodId);
         public ProductModel GetProduct(long foodId, long candyId);

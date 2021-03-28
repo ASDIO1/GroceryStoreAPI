@@ -56,7 +56,7 @@ namespace GroceryStoreAPI.Services
             var food = _foods.FirstOrDefault(f => f.Id == foodId);
             if (food == null)
             {
-                throw new NotFoundItemException($"The team with id: {foodId} does not exist.");
+                throw new NotFoundItemException($"The food with id: {foodId} does not exist.");
             }
             return food;
         }

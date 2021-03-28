@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace GroceryStoreAPI.Services
 {
-    public class ProductService : IProductsService
+    public class ProductsService : IProductsService
     {
         //Estados de prueba
         private ICollection<ProductModel> _products;
         //Service del otro recurso
         private IFoodsService _foodsService;
-        public ProductService(IFoodsService foodsService)
+        public ProductsService(IFoodsService foodsService)
         {
             _foodsService = foodsService;
 
@@ -29,7 +29,7 @@ namespace GroceryStoreAPI.Services
             });
             _products.Add(new ProductModel()
             {
-                Id = 1,
+                Id = 2,
                 Type = "Gummies",
                 Name = "Cerebritos",
                 Brand = "Mogul",
@@ -38,7 +38,7 @@ namespace GroceryStoreAPI.Services
             });
             _products.Add(new ProductModel()
             {
-                Id = 1,
+                Id = 3,
                 Type = "Chicken",
                 Name = "Chicken wing",
                 Brand = "Imba",
@@ -47,7 +47,7 @@ namespace GroceryStoreAPI.Services
             });
             _products.Add(new ProductModel()
             {
-                Id = 1,
+                Id = 4,
                 Type = "Sausage",
                 Name = "Sausage 8pack",
                 Brand = "Stege",
