@@ -26,13 +26,13 @@ namespace GroceryStoreAPI.Services
             _foods.Add(new FoodModel()
             {
                 Id = 1,
-                Name = "Candy",
+                Product = "Candy",
                 description = "A world of candies you cant even imagine"
             });
             _foods.Add(new FoodModel()
             {
                 Id = 2,
-                Name = "Meat",
+                Product = "Meat",
                 description = "Delicious meat for all tastes"
             });
         }
@@ -45,7 +45,7 @@ namespace GroceryStoreAPI.Services
             switch (orderBy.ToLower())
             {
                 case "name":
-                    return _foods.OrderBy(f => f.Name);
+                    return _foods.OrderBy(f => f.Product);
                 default:
                     return _foods.OrderBy(f => f.Id);
             }
@@ -79,7 +79,7 @@ namespace GroceryStoreAPI.Services
         {
             updatedFood.Id = foodId;
             var food = GetFood(foodId);
-            food.Name = updatedFood.Name ?? food.Name;
+            food.Product = updatedFood.Product ?? food.Product;
             food.description = updatedFood.description ?? food.description;
             return food;
         }
