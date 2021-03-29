@@ -27,7 +27,8 @@ namespace GroceryStoreAPI
         {
             services.AddControllers();
             services.AddSingleton<IFoodsService, FoodsService>();
-            services.AddSingleton<IProductsService, ProductsService>(); 
+            services.AddSingleton<IProductsService, ProductsService>();
+            services.AddAutoMapper(typeof(Startup));//Adds automapper and defines the scope for the automapper Profile
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

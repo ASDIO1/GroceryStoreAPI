@@ -1,4 +1,5 @@
-﻿using GroceryStoreAPI.Exceptions;
+﻿using AutoMapper;
+using GroceryStoreAPI.Exceptions;
 using GroceryStoreAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -13,47 +14,13 @@ namespace GroceryStoreAPI.Services
         private ICollection<ProductModel> _products;
         //Service del otro recurso
         private IFoodsService _foodsService;
-        public ProductsService(IFoodsService foodsService)
+        //Automapper
+        private IMapper _mapper;
+
+        public ProductsService(IFoodsService foodsService, IMapper mapper)
         {
             _foodsService = foodsService;
-
-            _products = new List<ProductModel>();
-            _products.Add(new ProductModel()
-            {
-                Id = 1,
-                Type = "Chocolate",
-                Name = "Sublime",
-                Brand = "Nestle",
-                Price = 2, 
-                FoodId = 1 //FoodModel with "Candy" name
-            });
-            _products.Add(new ProductModel()
-            {
-                Id = 2,
-                Type = "Gummies",
-                Name = "Cerebritos",
-                Brand = "Mogul",
-                Price = 2.50,
-                FoodId = 1 //FoodModel with "Candy" name
-            });
-            _products.Add(new ProductModel()
-            {
-                Id = 3,
-                Type = "Chicken",
-                Name = "Chicken wing",
-                Brand = "Imba",
-                Price = 7,
-                FoodId = 2 //FoodModel with "Meat" name
-            });
-            _products.Add(new ProductModel()
-            {
-                Id = 4,
-                Type = "Sausage",
-                Name = "Sausage 8pack",
-                Brand = "Stege",
-                Price = 16,
-                FoodId = 2 //FoodModel with "Meat" name
-            });
+            _mapper = mapper;
         }
         public IEnumerable<ProductModel> GetProducts(long foodId)
         {
