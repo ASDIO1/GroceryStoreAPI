@@ -26,13 +26,13 @@ namespace GroceryStoreAPI.Services
             _foods.Add(new FoodModel()
             {
                 Id = 1,
-                Product = "Candy",
+                Name = "Candy",
                 description = "A world of candies you cant even imagine"
             });
             _foods.Add(new FoodModel()
             {
                 Id = 2,
-                Product = "Meat",
+                Name = "Meat",
                 description = "Delicious meat for all tastes"
             });
         }
@@ -45,20 +45,22 @@ namespace GroceryStoreAPI.Services
             switch (orderBy.ToLower())
             {
                 case "name":
-                    return _foods.OrderBy(f => f.Product);
+                    return _foods.OrderBy(f => f.Name);
                 default:
                     return _foods.OrderBy(f => f.Id);
             }
         }
         
-        public FoodModel GetFood(long foodId)
+        public FoodWithProductModel GetFood(long foodId)
         {
             var food = _foods.FirstOrDefault(f => f.Id == foodId);
             if (food == null)
             {
                 throw new NotFoundItemException($"The food with id: {foodId} does not exist.");
             }
-            return food;
+            var foodWithProducts = new FoodWithProductModel(food);
+            //foodWithProducts.Products = //THIS IS BEEING FIXED with a repository to avoid Ciclic Dependency
+            return foodWithProducts;
         }
         public FoodModel CreateFood(FoodModel newFood)
         {
@@ -79,7 +81,7 @@ namespace GroceryStoreAPI.Services
         {
             updatedFood.Id = foodId;
             var food = GetFood(foodId);
-            food.Product = updatedFood.Product ?? food.Product;
+            food.Name = updatedFood.Name ?? food.Name;
             food.description = updatedFood.description ?? food.description;
             return food;
         }

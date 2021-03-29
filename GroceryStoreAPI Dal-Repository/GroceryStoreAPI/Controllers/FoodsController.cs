@@ -39,7 +39,7 @@ namespace GroceryStoreAPI.Controllers
         }
 
         [HttpGet("{foodId:long}")]
-        public ActionResult<FoodModel> GetFood(long foodId)
+        public ActionResult<FoodWithProductModel> GetFood(long foodId)
         {
             try
             {
