@@ -52,19 +52,20 @@ namespace GroceryStoreAPI.Services
                 Name = "Sausage 8pack",
                 Brand = "Stege",
                 Price = 16,
+                Discount = 0.2,//%
                 FoodId = 2 //FoodModel with "Meat" name
             });
         }
-        public IEnumerable<ProductModel> GetProducts(long foodId, double budget = 0)
+        public IEnumerable<ProductModel> GetProducts(long foodId, double budget = 0, double discount = 0)
         {
             ValidateFood(foodId);
             var allProducts = _products.Where(p => p.FoodId == foodId);
             if (budget < 0)
                 throw new InvalidOperationItemException($"The budget value: {budget} is invalid, enter a budget equals or greater than 0 please");
-            if (budget > 0)
-            {
-                return GetBudgetProducts(budget);
-            }
+            if (discount < 0 || discount > 0.99)
+                throw new InvalidOperationItemException($"The discount value: {discount} is invalid, enter a discount int he range of 0 to 0.99 please");
+
+            allProducts = CheckGetQueryParams(allProducts, budget, discount);
             return allProducts;
 
         }
@@ -95,8 +96,6 @@ namespace GroceryStoreAPI.Services
             return true;
         }
 
-
-
         public ProductModel UpdateProduct(long foodId, long productId, ProductModel updatedProduct)
         {
             var productToUpdate = GetProduct(foodId, productId);
@@ -107,19 +106,37 @@ namespace GroceryStoreAPI.Services
             return productToUpdate;
         }
 
-
         //Aux Methods
         private void ValidateFood(long foodId) 
         {
             _foodsService.GetFood(foodId);//this already validates and throws exceptions
         }
 
-        //Bussines logic endpoint methods logic
+        //BUSSINES LOGIC METHODS
         //When a person asks for a certain Food products under their budget
-        private IEnumerable<ProductModel> GetBudgetProducts(double budget = 0.5)   //Gets all products <= budget, ordered from the cheapest
+        private IEnumerable<ProductModel> GetBudgetProducts(double budget = 0)   //Gets all products <= budget, ordered from the cheapest
         {
             var requestedProducts = _products.Where(p => p.Price <= budget).OrderByDescending(p => p.Price);
             return requestedProducts;
+        }
+        //When a person asks for a certain Food products whit a certain discount
+        private IEnumerable<ProductModel> GetDiscountProducts(double discount = 0)
+        {
+            var discountedProducts = _products.Where(p => p.Discount <= discount && p.Discount > 0).OrderByDescending(p => p.Discount);
+            return discountedProducts;
+        }
+
+        private IEnumerable<ProductModel> CheckGetQueryParams(IEnumerable<ProductModel> allProducts, double budget = 0, double discount = 0)
+        {
+            if (budget > 0)
+            {
+                allProducts = GetBudgetProducts(budget);
+            }
+            if (discount >= 0 && discount <= 0.99)
+            {
+                allProducts = GetDiscountProducts(discount);
+            }
+            return allProducts;
         }
     }
 }

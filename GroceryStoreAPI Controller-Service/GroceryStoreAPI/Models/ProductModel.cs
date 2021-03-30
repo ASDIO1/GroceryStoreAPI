@@ -21,6 +21,8 @@ namespace GroceryStoreAPI.Models
         [Required]
         [Range(0.1,100000)]
         public double? Price { get; set; }
+        [Range(0, 0.99,ErrorMessage = "Error{0}. discount is invalid. It should be in the range of {1} to {2} percent")]
+        public double? Discount { get; set; } = 0;
         public long FoodId { get; set; }
     }
 }

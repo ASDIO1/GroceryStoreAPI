@@ -19,11 +19,11 @@ namespace GroceryStoreAPI.Controllers
             _productService = productService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<ProductModel>> GetProducts(long foodId, double budget = 0)//Gets product equals or under the users budget
+        public ActionResult<IEnumerable<ProductModel>> GetProducts(long foodId, double budget = 0, double discount = 0)//Gets product equals or under the users budget
         {
             try
             {
-                var products = _productService.GetProducts(foodId, budget);
+                var products = _productService.GetProducts(foodId, budget, discount);
                 return Ok(products);
             }
             catch (NotFoundItemException ex)
