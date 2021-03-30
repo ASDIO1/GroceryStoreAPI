@@ -19,11 +19,11 @@ namespace GroceryStoreAPI.Controllers
             _productService = productService;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<ProductModel>> GetProducts(long foodId)
+        public ActionResult<IEnumerable<ProductModel>> GetProducts(long foodId, double budget = 0)//Gets product equals or under the users budget
         {
             try
             {
-                var products = _productService.GetProducts(foodId);
+                var products = _productService.GetProducts(foodId, budget);
                 return Ok(products);
             }
             catch (NotFoundItemException ex)
@@ -107,5 +107,7 @@ namespace GroceryStoreAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Something unexpected happened.");
             }
         }
+        // Bussines logic endpoints:
+        // 1 BudgetProducts  Applied over the "GetProducts" Endpoint.  Gets product equals or under the users budget
     }
 }

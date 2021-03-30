@@ -55,10 +55,18 @@ namespace GroceryStoreAPI.Services
                 FoodId = 2 //FoodModel with "Meat" name
             });
         }
-        public IEnumerable<ProductModel> GetProducts(long foodId)
+        public IEnumerable<ProductModel> GetProducts(long foodId, double budget = 0)
         {
             ValidateFood(foodId);
-            return _products.Where(p => p.FoodId == foodId);
+            var allProducts = _products.Where(p => p.FoodId == foodId);
+            if (budget < 0)
+                throw new InvalidOperationItemException($"The budget value: {budget} is invalid, enter a budget equals or greater than 0 please");
+            if (budget > 0)
+            {
+                return GetBudgetProducts(budget);
+            }
+            return allProducts;
+
         }
         public ProductModel GetProduct(long foodId, long productId)
         {
@@ -107,5 +115,11 @@ namespace GroceryStoreAPI.Services
         }
 
         //Bussines logic endpoint methods logic
+        //When a person asks for a certain Food products under their budget
+        private IEnumerable<ProductModel> GetBudgetProducts(double budget = 0.5)   //Gets all products <= budget, ordered from the cheapest
+        {
+            var requestedProducts = _products.Where(p => p.Price <= budget).OrderByDescending(p => p.Price);
+            return requestedProducts;
+        }
     }
 }
